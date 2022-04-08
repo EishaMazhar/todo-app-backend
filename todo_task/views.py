@@ -1,14 +1,16 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.forms.models import model_to_dict
-from rest_framework import generics
 from rest_framework.decorators import api_view
-
-from .models import TodoTask
 from django.shortcuts import render
-
-# Create your views here.
+from .models import TodoTask
+from rest_framework import generics, viewsets
 from .serializers import TodoTaskSerializer
+
+
+class TodoViewSet(viewsets.ModelViewSet):
+    queryset = TodoTask.objects.all()
+    serializer_class = TodoTaskSerializer
 
 
 # @csrf_exempt
@@ -33,11 +35,12 @@ from .serializers import TodoTaskSerializer
 #         return JsonResponse({'status': True, 'msg': 'successful'})
 
 
-class RetrieveUpdateDestroyTodo(generics.RetrieveUpdateDestroyAPIView):
-    queryset = TodoTask.objects.all()
-    serializer_class = TodoTaskSerializer(many=True)
+# class RetrieveUpdateDestroyTodo(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = TodoTask.objects.all()
+#     serializer_class = TodoTaskSerializer(many=True)
+#
+#
+# class CreateTodoList(generics.ListCreateAPIView):
+#     queryset = TodoTask.objects.all()
+#     serializer_class = TodoTaskSerializer(many=True)
 
-
-class CreateTodoList(generics.ListCreateAPIView):
-    queryset = TodoTask.objects.all()
-    serializer_class = TodoTaskSerializer(many=True)
